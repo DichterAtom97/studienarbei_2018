@@ -1,4 +1,3 @@
------TI-REX started at Sat Feb 03 2018 00:30:33 GMT+0100 (Mitteleuropäische Zeit)
-TIREX server listening on port 50056
-removing old log file tirex-2018-01-12.log
-ride npm module instead at app.js:488:21
+-----TI-REX started at Sat Feb 03 2018 10:38:54 GMT+0100 (Mitteleuropäische Zeit)
+TIREX server listening on port 51540
+ deprecated methodOverride: use method-override npm module instead at app.js:488:21

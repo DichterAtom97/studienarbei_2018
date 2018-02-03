@@ -1,0 +1,29 @@
+/*
+ * i2c.c
+ *
+ *  Created on: 03.02.2018
+ *      Author: Christoph
+ */
+
+#include <msp430.h>
+#include "i2c.h"
+
+void i2c_init(void)
+{
+    P1SEL |= BIT6 + BIT7;                     // Assign I2C pins to USCI_B0
+    P1SEL2|= BIT6 + BIT7;                     // Assign I2C pins to USCI_B0
+    UCB0CTL1 |= UCSWRST;                      // Enable SW reset
+    UCB0CTL0 = UCMST+UCMODE_3+UCSYNC;         // I2C Master, synchronous mode, 7-bit address
+    UCB0CTL1 = UCSSEL_2+UCSWRST+UCTR;         // Use SMCLK, keep SW reset, Transmit Mode
+    UCB0BR0 = 12;                             // fSCL = SMCLK/12 = ~100kHz
+    UCB0BR1 = 0;
+    UCB0I2CSA = 0x39;                         // Set slave address
+    UCB0CTL1 &= ~UCSWRST;                     // Clear SW reset, resume operation
+}
+
+
+void i2c_sendCom(char reg_adr, char data)
+{
+
+
+}

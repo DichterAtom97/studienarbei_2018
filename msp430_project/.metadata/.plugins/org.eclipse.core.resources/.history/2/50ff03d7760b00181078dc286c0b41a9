@@ -1,0 +1,60 @@
+/*
+ * adps_gesture.c
+ *
+ *  Created on: 03.02.2018
+ *      Author: Christoph
+ */
+
+#include <msp430.h>
+#include "adps_gestures.h"
+#include "i2c.h"
+
+void adps_init(void)
+{
+    P2SEL  &= 0x00;    //P2.x is GPIO
+    P2SEL2 &= 0x00;
+    P2DIR  &= (~BIT5); //P2.x is input
+    P2IES  |= (BIT5);  //Falling Edge 1->0
+    P2IFG  &= (~BIT5); //clear interrupt flag
+    P2IE   |= (BIT5);  //enable interrupt
+    usdelay(6000);     //POR -> SLEEP state
+}
+
+void adps_startGestureMode(void)
+{
+    i2c_tx(ADPS99_ADDR, GESTURE_MODE, ONE_MESSAGE, ENABLE); //enable PON and gesture mode
+}
+
+void adps_stopGestureMode(void)
+{
+    i2c_tx(ADPS99_ADDR, ENABLE_RESET, ONE_MESSAGE, ENABLE); //->SLEEP mode for adps_config
+}
+
+void adps_setGestureInt(void)
+{
+    i2c_tx(ADPS99_ADDR, GESTURE_INT, ONE_MESSAGE, GCONFIG4); //set GMODE and GIEN(HW-interrupt)
+}
+
+void adps_setGestureDirection(char direction)
+{
+    if (direction == UP_DOWN)
+    {
+        i2c_tx(ADPS99_ADDR, UP_DOWN, ONE_MESSAGE, GCONFIG3); //use all four directions
+    }
+    else if(direction == RIGTH_LEFT)
+    {
+        i2c_tx(ADPS99_ADDR, RIGTH_LEFT, ONE_MESSAGE, GCONFIG3); //use all four directions
+    }
+    else
+    {
+    i2c_tx(ADPS99_ADDR, ALL_DIRECTIONS, ONE_MESSAGE, GCONFIG3); //use all four directions
+    }
+}
+
+
+
+#pragma vector=PORT2_VECTOR
+__interrupt void Port_2(void)
+{
+    P2IFG &= (~BIT5); // P2.5 IFG clear
+}

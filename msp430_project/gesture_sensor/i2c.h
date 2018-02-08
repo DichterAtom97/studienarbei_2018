@@ -15,7 +15,7 @@
 #define NOACK       2
 
 void i2c_init(void);
-void i2c_tx(unsigned char, unsigned char *, unsigned char, unsigned char);
+void i2c_tx(unsigned char slave_addr, unsigned char *txdata, unsigned char bufSize, unsigned char reg_addr);
 void i2c_rx(unsigned char, unsigned char *, unsigned char, unsigned char, unsigned char);
 void usdelay(int);
 

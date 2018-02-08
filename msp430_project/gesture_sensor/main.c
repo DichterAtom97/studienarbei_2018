@@ -12,6 +12,7 @@ int main(void)
     BCSCTL1 = CALBC1_1MHZ;                   // Set DCO to 1MHz
     DCOCTL = CALDCO_1MHZ;
     i2c_init();                              // Initialize I2C
+    adps_init();
                                                  // Address is High byte then low byte
     i2c_tx(EEPROM_ADDR, txdataEEPROM, sizeof(txdataEEPROM)-1,TWOBYTEADDR,0x01,0x00);//i2c TX 115 bytes starting @ address 01:00
     i2c_tx(EEPROM_ADDR, txdataEEPROM, sizeof(txdataEEPROM)-1,TWOBYTEADDR,0x02,0x00);//i2c TX 115 bytes starting @ address 02:00

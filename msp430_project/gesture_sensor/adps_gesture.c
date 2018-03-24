@@ -6,9 +6,14 @@
  */
 
 #include <msp430.h>
-#include "adps_gestures.h"
+#include "adps_gesture.h"
 #include "i2c.h"
 
+
+/**
+ * \brief initialize P2.5 as input and enables interrupt at falling edge
+ *
+ */
 void adps_init(void)
 {
     P2SEL  &= 0x00;    //P2.x is GPIO
@@ -35,20 +40,25 @@ void adps_setGestureInt(void)
     i2c_tx(ADPS99_ADDR, GESTURE_INT, ONE_MESSAGE, GCONFIG4); //set GMODE and GIEN(HW-interrupt)
 }
 
-void adps_setGestureDirection(char direction)
+void adps_setGestureDirection(unsigned char *direction)
 {
     if (direction == UP_DOWN)
     {
-        i2c_tx(ADPS99_ADDR, UP_DOWN, ONE_MESSAGE, GCONFIG3); //use all four directions
+        i2c_tx(ADPS99_ADDR, UP_DOWN, sizeof(direction)-1, GCONFIG3); //use all four directions
     }
     else if(direction == RIGTH_LEFT)
     {
-        i2c_tx(ADPS99_ADDR, RIGTH_LEFT, ONE_MESSAGE, GCONFIG3); //use all four directions
+        i2c_tx(ADPS99_ADDR, RIGTH_LEFT, sizeof(direction)-1, GCONFIG3); //use all four directions
     }
     else
     {
-        i2c_tx(ADPS99_ADDR, ALL_DIRECTIONS, ONE_MESSAGE, GCONFIG3); //use all four directions
+        i2c_tx(ADPS99_ADDR, ALL_DIRECTIONS, sizeof(direction)-1, GCONFIG3); //use all four directions
     }
+}
+
+void adps_getGestureDirection(void)
+{
+
 }
 
 void adps_setGestureProximityEnter(void)

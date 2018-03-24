@@ -1,6 +1,6 @@
 #define __unsigned_chars__ 1	/* Predefined */
-#define __DATE__ "Feb  8 2018"	/* Predefined */
-#define __TIME__ "16:54:19"	/* Predefined */
+#define __DATE__ "Mar 18 2018"	/* Predefined */
+#define __TIME__ "18:53:27"	/* Predefined */
 #define __STDC__ 1	/* Predefined */
 #define __STDC_VERSION__ 199409L	/* Predefined */
 #define __STDC_HOSTED__ 1	/* Predefined */
@@ -27,4 +27,3 @@
 #define __TI_STRICT_FP_MODE__ 1	/* Predefined */
 #define _OPTIMIZE_FOR_SPACE 1
 #define __MSP430G2553__ 1
-#define _INLINE 1

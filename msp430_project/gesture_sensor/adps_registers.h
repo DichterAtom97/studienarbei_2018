@@ -33,20 +33,20 @@
 
 
 //adps9960-bit commands
-#define ENABLE_RESET     0x00
-#define ALL_DIRECTIONS   0x00
-#define DEFAULT_OFF_D    0x00
-#define DEFAULT_OFF_U    0x00
-#define DEFAULT_OFF_L    0x00
-#define DEFAULT_OFF_R    0x00
-#define GCONFIG2_DEFAULT 0x01
-#define UP_DOWN          0x01
-#define RIGTH_LEFT       0x02
-#define GESTURE_INT      0x03
-#define FIFO_EXIT        0x40
-#define GESTURE_MODE     0x41
-#define EXIT_THRESHOLD   0x1E
-#define DEFAULT_GPULSE   0xC9
+#define ENABLE_RESET     (unsigned char*) 0x00
+#define ALL_DIRECTIONS   (unsigned char*) 0x00
+#define DEFAULT_OFF_D    (unsigned char*) 0x00
+#define DEFAULT_OFF_U    (unsigned char*) 0x00
+#define DEFAULT_OFF_L    (unsigned char*) 0x00
+#define DEFAULT_OFF_R    (unsigned char*) 0x00
+#define GCONFIG2_DEFAULT (unsigned char*) 0x01
+#define UP_DOWN          (unsigned char*) 0x01
+#define RIGTH_LEFT       (unsigned char*) 0x02
+#define GESTURE_INT      (unsigned char*) 0x03
+#define FIFO_EXIT        (unsigned char*) 0x40
+#define GESTURE_MODE     (unsigned char*) 0x41
+#define EXIT_THRESHOLD   (unsigned char*) 0x1E
+#define DEFAULT_GPULSE   (unsigned char*) 0xC9
 
 
 #endif /* ADPS_REGISTERS_H_ */

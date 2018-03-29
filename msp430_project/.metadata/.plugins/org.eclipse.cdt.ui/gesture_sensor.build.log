@@ -1,7 +1,0 @@
-
-**** Build of configuration Debug for project gesture_sensor ****
-
-"C:\\ti\\ccsv7\\utils\\bin\\gmake" -k -j 4 all -O 
-gmake[1]: 'gesture_sensor.out' is up to date.
-
-**** Build Finished ****

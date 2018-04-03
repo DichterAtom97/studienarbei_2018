@@ -40,7 +40,7 @@ typedef enum I2C_ModeEnum{
 } I2C_Mode;
 void initI2C(void);
 
-void initClockTo1MHz(void);
+void initClockTo16MHz(void);
 
 
 /* I2C Write and Read Functions */

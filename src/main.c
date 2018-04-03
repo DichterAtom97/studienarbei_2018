@@ -16,10 +16,10 @@ int main(void)
     //uint8_t data2[]={0xC9};
 
     WDTCTL = WDTPW + WDTHOLD;   // Stop WDT
-    initClockTo1MHz();
+    initClockTo16MHz();
     initI2C();
     adps_init();
-    __delay_cycles(10000000);
+    __delay_cycles(100000000);
 /*
     I2C_Master_WriteReg(SLAVE_ADDR, 0xAA, data1, TYPE_0_LENGTH);
     __delay_cycles(5000);
@@ -50,12 +50,13 @@ int main(void)
     adps_setGesturePulse();
     __delay_cycles(5000);
     adps_startGestureMode();
-    __delay_cycles(10000000);
-    while(1)
-    {
-        __bis_SR_register(LPM0_bits + GIE);
-        //waiting
-    }
+    __delay_cycles(10000000); // wait to get into Idle state
 
 
+
+    __bis_SR_register(LPM0_bits + GIE);
+    //waiting
+
+
+    return 0;
 }

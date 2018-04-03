@@ -73,7 +73,7 @@ I2C_Mode I2C_Master_WriteReg(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_da
     IE2 |= UCB0TXIE;                        // Enable TX interrupt
 
     UCB0CTL1 |= UCTR + UCTXSTT;             // I2C TX, start condition
-    __bis_SR_register(CPUOFF + GIE);              // Enter LPM0 w/ interrupts
+    __bis_SR_register(CPUOFF + GIE);        // Enter LPM0 w/ interrupts
 
     return MasterMode;
 }
@@ -95,17 +95,16 @@ void CopyArray(uint8_t *source, uint8_t *dest, uint8_t count)
 //******************************************************************************
 
 
-void initClockTo1MHz(void)
+void initClockTo16MHz(void)
 {
     if (CALBC1_16MHZ==0xFF)                  // If calibration constant erased
     {
         while(1);                               // do not load, trap CPU!!
     }
     DCOCTL = 0;                               // Select lowest DCOx and MODx settings
-    BCSCTL1 = CALBC1_1MHZ;                    // Set DCO
-    DCOCTL = CALDCO_1MHZ;
+    BCSCTL1 = CALBC1_16MHZ;                    // Set DCO
+    DCOCTL = CALDCO_16MHZ;
 
-    //TACTL =TASSEL_3 + MC_1; //sets UP count and MCLK for TimerA
 }
 
 void initI2C(void)
@@ -119,7 +118,7 @@ void initI2C(void)
     UCB0CTL1 |= UCSWRST;                      // Enable SW reset
     UCB0CTL0 = UCMST + UCMODE_3 + UCSYNC;     // I2C Master, synchronous mode
     UCB0CTL1 = UCSSEL_2 + UCSWRST;            // Use SMCLK, keep SW reset
-    UCB0BR0 = 10;                            // fSCL = SMCLK/160 = ~100kHz
+    UCB0BR0 = 160;                            // fSCL = SMCLK/160 = ~100kHz
     UCB0BR1 = 0;
     UCB0I2CSA = SLAVE_ADDR;                   // Slave Address
     UCB0CTL1 &= ~UCSWRST;                     // Clear SW reset, resume operation

@@ -116,11 +116,12 @@ void adps_setDefault(void)
     __delay_cycles(5000);
 }
 
-void adps_startProcess(void)
+MOTION adps_startProcess(void)
 {
     gesture_type FIFO_mem; 
+    MOTION direction = none;
 
-    while (1)
+    do
     {
 
         while (ack_gesture != 1)
@@ -149,6 +150,9 @@ void adps_startProcess(void)
 
         gesture_find(&FIFO_mem);
     }
+    while(direction == none);
+
+    return direction;
 }
 
 

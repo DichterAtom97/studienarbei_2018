@@ -1,8 +1,9 @@
 .) gesture sensor
 ✔  Vorrichtung für Logikanalysator bauen. @started(18-03-29 19:49) @done(18-03-29 19:49) @lasted(22 seconds)
-☐  Interrupt durch adps erzeugen. (today)
-☐  gesammelte Daten auslesen. (today)
+✔  Interrupt durch adps erzeugen. (today) @done(18-04-06 11:14)
+✔  gesammelte Daten auslesen. (today) @done(18-04-06 11:14)
+☐  Kalibrierung
 ☐  Daten auswerten. (tomorrow in the morning)
 
 .)project
-☐ interface naming (tomorrow) -> packaging
+☐ interface naming (tomorrow) -> packaging @started(18-04-06 11:15)

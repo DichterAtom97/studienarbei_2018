@@ -7,6 +7,7 @@
 
 #include <msp430.h>
 #include "adps_gesture.h"
+#include "adps_calc.h"
 #include "i2c_std.h"
 
 
@@ -92,6 +93,8 @@ void adps_setGesturePulse(void)
     uint8_t data[] = {0xC9};
     I2C_Master_WriteReg(SLAVE_ADDR, GPULSE, data, ONE_MESSAGE);
 }
+
+
 
 void adps_setDefault(void)
 {

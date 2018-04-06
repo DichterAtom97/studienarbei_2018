@@ -19,7 +19,7 @@ int main(void)
     initClockTo16MHz();
     initI2C();
     adps_init();
-    __delay_cycles(100000000);
+    __delay_cycles(10000000);
 /*
     I2C_Master_WriteReg(SLAVE_ADDR, 0xAA, data1, TYPE_0_LENGTH);
     __delay_cycles(5000);
@@ -33,25 +33,27 @@ int main(void)
 */
     adps_resetSensor();
     __delay_cycles(5000);
-    adps_setGestureInt();
-    __delay_cycles(5000);
-    adps_setGestureDirection();
-    __delay_cycles(5000);
-    adps_setGestureProximityEnter();
-    __delay_cycles(5000);
-    adps_setGestureExitThreshold();
-    __delay_cycles(5000);
-    adps_setGestureFIFOExit();
-    __delay_cycles(5000);
-    adps_setGestureGain();
-    __delay_cycles(5000);
-    adps_setGestureOffset();
-    __delay_cycles(5000);
-    adps_setGesturePulse();
-    __delay_cycles(5000);
+    adps_setDefault();
     adps_startGestureMode();
-    __delay_cycles(10000000); // wait to get into Idle state
+    __delay_cycles(150000); // wait to get into Idle state
 
+    /*read status */
+    I2C_Master_ReadReg(SLAVE_ADDR, ID, TYPE_0_LENGTH);
+    __delay_cycles(5000);
+    I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
+    __delay_cycles(5000);
+    I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_U, TYPE_1_LENGTH);
+    __delay_cycles(5000);
+    I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_D, TYPE_1_LENGTH);
+    __delay_cycles(5000);
+    I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_L, TYPE_1_LENGTH);
+    __delay_cycles(5000);
+    I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_R, TYPE_1_LENGTH);
+    __delay_cycles(5000);
+    I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
+    __delay_cycles(5000);
+
+    adps_startProcess(); //start receiving process 
 
 
     __bis_SR_register(LPM0_bits + GIE);

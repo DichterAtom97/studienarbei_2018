@@ -21,13 +21,15 @@ void adps_init(void)
     P2DIR  &= (~BIT5); //P2.x is input
     P2IES  |= (BIT5);  //Falling Edge 1->0
     P2IFG  &= (~BIT5); //clear interrupt flag
+    P2IFG &= (~BIT6); // P2.5 IFG clear
+    P2IFG &= (~BIT7); // P2.5 IFG clear
     P2IE   |= (BIT5);  //enable interrupt
     //usdelay(6000);     //POR -> SLEEP state
 }
 
 void adps_startGestureMode(void)
 {
-    uint8_t data[] = {0x41};
+    uint8_t data[] = {0x65};
     I2C_Master_WriteReg(SLAVE_ADDR, ENABLE, data, ONE_MESSAGE);
 }
 
@@ -57,7 +59,7 @@ void adps_setGestureProximityEnter(void)
 
 void adps_setGestureExitThreshold(void)
 {
-    uint8_t data[] = {0x1E};
+    uint8_t data[] = {0x4};
     I2C_Master_WriteReg(SLAVE_ADDR, GEXTH, data, ONE_MESSAGE);
 }
 
@@ -91,10 +93,60 @@ void adps_setGesturePulse(void)
     I2C_Master_WriteReg(SLAVE_ADDR, GPULSE, data, ONE_MESSAGE);
 }
 
+void adps_setDefault(void)
+{
+    adps_setGestureInt();
+    __delay_cycles(5000);
+    adps_setGestureDirection();
+    __delay_cycles(5000);
+    adps_setGestureProximityEnter();
+    __delay_cycles(5000);
+    adps_setGestureExitThreshold();
+    __delay_cycles(5000);
+    adps_setGestureFIFOExit();
+    __delay_cycles(5000);
+    adps_setGestureGain();
+    __delay_cycles(5000);
+    adps_setGestureOffset();
+    __delay_cycles(5000);
+    adps_setGesturePulse();
+    __delay_cycles(5000);
+}
+
+void adps_startProcess(void)
+{
+    while (1)
+    {
+
+        while (ack_gesture != 1)
+        {
+            //waiting for gesture FIFO overflow
+        }
+
+        ack_gesture = 0;
+
+        I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_U, TYPE_2_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_D, TYPE_2_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_L, TYPE_2_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_R, TYPE_2_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_2_LENGTH);
+        __delay_cycles(5000);
+    }
+}
+
 
 
 #pragma vector=PORT2_VECTOR
 __interrupt void Port_2(void)
 {
+    ack_gesture = 1;
     P2IFG &= (~BIT5); // P2.5 IFG clear
+
 }
+

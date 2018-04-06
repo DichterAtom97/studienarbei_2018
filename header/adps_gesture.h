@@ -16,8 +16,10 @@
 
 // basic functions
 void adps_init(void);
+void adps_setDefault(void);
 void adps_startGestureMode(void);
 void adps_resetSensor(void);
+void adps_startProcess(void);
 
 // set functions
 void adps_setGestureInt(void);
@@ -39,6 +41,9 @@ typedef struct
     uint8_t right;
 
 }gesture_type;
+
+
+int ack_gesture;
 
 
 #endif /* ADPS_GESTURE_H_ */

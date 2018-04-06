@@ -12,6 +12,8 @@
 #define ENABLE    0x80 //enable register, R/W
 #define CONFIG1   0x8D //config register 1, R/W
 #define CONFIG2   0x90 //config register 2, R/W
+#define ID        0x92 //device ID, R
+#define STATUS    0x93 //device status, R
 #define STATUS    0x93 //device status, R
 #define GPENTH    0xA0 //gesture proximity entry threshold, R/W
 #define GEXTH     0xA1 //gesture exit threshold, R/W

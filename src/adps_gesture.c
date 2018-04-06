@@ -118,6 +118,8 @@ void adps_setDefault(void)
 
 void adps_startProcess(void)
 {
+    gesture_type FIFO_mem; 
+
     while (1)
     {
 
@@ -130,16 +132,22 @@ void adps_startProcess(void)
 
         I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
         __delay_cycles(5000);
-        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_U, TYPE_2_LENGTH);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_U, TYPE_4_LENGTH);
+        CopyArray(ReceiveBuffer, FIFO_mem.up, TYPE_4_LENGTH);
         __delay_cycles(5000);
-        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_D, TYPE_2_LENGTH);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_D, TYPE_4_LENGTH);
+        CopyArray(ReceiveBuffer, FIFO_mem.down, TYPE_4_LENGTH);
         __delay_cycles(5000);
-        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_L, TYPE_2_LENGTH);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_L, TYPE_4_LENGTH);
+        CopyArray(ReceiveBuffer, FIFO_mem.left, TYPE_4_LENGTH);
         __delay_cycles(5000);
-        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_R, TYPE_2_LENGTH);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_R, TYPE_4_LENGTH);
+        CopyArray(ReceiveBuffer, FIFO_mem.right, TYPE_4_LENGTH);
         __delay_cycles(5000);
-        I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_2_LENGTH);
+        I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
         __delay_cycles(5000);
+
+        gesture_find(&FIFO_mem);
     }
 }
 

@@ -38,23 +38,29 @@ int main(void)
     __delay_cycles(150000); // wait to get into Idle state
 
     /*read status */
-    I2C_Master_ReadReg(SLAVE_ADDR, ID, TYPE_0_LENGTH);
-    __delay_cycles(5000);
-    I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
-    __delay_cycles(5000);
-    I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_U, TYPE_1_LENGTH);
-    __delay_cycles(5000);
-    I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_D, TYPE_1_LENGTH);
-    __delay_cycles(5000);
-    I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_L, TYPE_1_LENGTH);
-    __delay_cycles(5000);
-    I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_R, TYPE_1_LENGTH);
-    __delay_cycles(5000);
-    I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
-    __delay_cycles(5000);
 
-    adps_startProcess(); //start receiving process 
 
+    while(1)
+    {
+        I2C_Master_ReadReg(SLAVE_ADDR, ID, TYPE_0_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, 0xAE, TYPE_0_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_U, TYPE_16_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_D, TYPE_16_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_L, TYPE_16_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_R, TYPE_16_LENGTH);
+        __delay_cycles(5000);
+        I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
+        __delay_cycles(5000);
+
+        adps_startProcess(); //start receiving process
+    }
 
     __bis_SR_register(LPM0_bits + GIE);
     //waiting

@@ -66,7 +66,7 @@ void adps_setGestureExitThreshold(void)
 
 void adps_setGestureFIFOExit(void)
 {
-    uint8_t data[] = {0x40};
+    uint8_t data[] = {0xC0};
     I2C_Master_WriteReg(SLAVE_ADDR, GCONFIG1, data, ONE_MESSAGE);
 }
 
@@ -78,7 +78,7 @@ void adps_setGestureGain(void)
 
 void adps_setGestureOffset(void)
 {
-    uint8_t data[] = {0x00};
+    uint8_t data[] = {0x02};
     I2C_Master_WriteReg(SLAVE_ADDR, GOFFSET_U, data, ONE_MESSAGE); //set Offset
     __delay_cycles(5000);
     I2C_Master_WriteReg(SLAVE_ADDR, GOFFSET_D, data, ONE_MESSAGE); //set Offset
@@ -133,22 +133,22 @@ MOTION adps_startProcess(void)
 
         I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
         __delay_cycles(5000);
-        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_U, TYPE_4_LENGTH);
-        CopyArray(ReceiveBuffer, FIFO_mem.up, TYPE_4_LENGTH);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_U, TYPE_16_LENGTH);
+        CopyArray(ReceiveBuffer, FIFO_mem.up, TYPE_16_LENGTH);
         __delay_cycles(5000);
-        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_D, TYPE_4_LENGTH);
-        CopyArray(ReceiveBuffer, FIFO_mem.down, TYPE_4_LENGTH);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_D, TYPE_16_LENGTH);
+        CopyArray(ReceiveBuffer, FIFO_mem.down, TYPE_16_LENGTH);
         __delay_cycles(5000);
-        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_L, TYPE_4_LENGTH);
-        CopyArray(ReceiveBuffer, FIFO_mem.left, TYPE_4_LENGTH);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_L, TYPE_16_LENGTH);
+        CopyArray(ReceiveBuffer, FIFO_mem.left, TYPE_16_LENGTH);
         __delay_cycles(5000);
-        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_R, TYPE_4_LENGTH);
-        CopyArray(ReceiveBuffer, FIFO_mem.right, TYPE_4_LENGTH);
+        I2C_Master_ReadReg(SLAVE_ADDR, GFIFO_R, TYPE_16_LENGTH);
+        CopyArray(ReceiveBuffer, FIFO_mem.right, TYPE_16_LENGTH);
         __delay_cycles(5000);
         I2C_Master_ReadReg(SLAVE_ADDR, STATUS, TYPE_0_LENGTH);
         __delay_cycles(5000);
 
-        gesture_find(&FIFO_mem);
+        direction = gesture_find(&FIFO_mem);
     }
     while(direction == none);
 

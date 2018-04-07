@@ -1,5 +1,12 @@
 #include <msp430.h>
 #include "adps_calc.h"
+#include <stdlib.h>
+
+int gesture_ud_count_;
+int gesture_lr_count_;
+int gesture_ud_delta_ = 0;
+int gesture_lr_delta_ = 0;
+
 
 MOTION gesture_find(gesture_type *FIFO_mem)
 {
@@ -18,11 +25,10 @@ MOTION gesture_find(gesture_type *FIFO_mem)
     int lr_ratio_last;
     int ud_delta;
     int lr_delta;
-    int gesture_ud_delta_ = 0;
-    int gesture_lr_delta_ = 0;
+
     int i;
 
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < 16; i++)
     {
         if ((FIFO_mem->up[i] > THRESHOLD) &&
             (FIFO_mem->down[i] > THRESHOLD) &&
@@ -46,7 +52,7 @@ MOTION gesture_find(gesture_type *FIFO_mem)
         ret = none;
     }
     /* Find the last value in U/D/L/R above the threshold */
-    for (i = 4 - 1; i >= 0; i--)
+    for (i = 15; i >= 0; i--)
     {
         if ((FIFO_mem->up[i] > THRESHOLD) &&
             (FIFO_mem->down[i] > THRESHOLD) &&
@@ -81,28 +87,107 @@ gesture_lr_delta_ += lr_delta;
 /* Determine U/D gesture */
 if (gesture_ud_delta_ >= GESTURE_SENSITIVITY_1)
 {
-    ret = motion_down;
+    gesture_ud_count_ = 1;
 }
-else if(gesture_ud_delta_ <= -GESTURE_SENSITIVITY_1)
+else if (gesture_ud_delta_ <= -GESTURE_SENSITIVITY_1)
 {
-    ret = motion_up;
-}
-/* Determine L/R gesture */
-else if (gesture_lr_delta_ >= GESTURE_SENSITIVITY_1)
-{
-    ret = motion_right;
-}
-else if (gesture_lr_delta_ <= -GESTURE_SENSITIVITY_1)
-{
-    ret = motion_left;
+    gesture_ud_count_ = -1;
 }
 else
 {
-   ret = none;
+    gesture_ud_count_ = 0;
 }
+
+/* Determine L/R gesture */
+if (gesture_lr_delta_ >= GESTURE_SENSITIVITY_1)
+{
+    gesture_lr_count_ = 1;
+}
+else if (gesture_lr_delta_ <= -GESTURE_SENSITIVITY_1)
+{
+    gesture_lr_count_ = -1;
+}
+else
+{
+    gesture_lr_count_ = 0;
+}
+
+ret = gesture_detection();
 
 return ret;
 
+}
+
+MOTION gesture_detection(void)
+{
+    MOTION dir;
+    /* Determine swipe direction */
+    if ((gesture_ud_count_ == -1) && (gesture_lr_count_ == 0))
+    {
+        dir = motion_up;
+    }
+    else if ((gesture_ud_count_ == 1) && (gesture_lr_count_ == 0))
+    {
+        dir = motion_down;
+    }
+    else if ((gesture_ud_count_ == 0) && (gesture_lr_count_ == 1))
+    {
+        dir = motion_right;
+    }
+    else if ((gesture_ud_count_ == 0) && (gesture_lr_count_ == -1))
+    {
+        dir = motion_left;
+    }
+    else if ((gesture_ud_count_ == -1) && (gesture_lr_count_ == 1))
+    {
+        if (abs(gesture_ud_delta_) > abs(gesture_lr_delta_))
+        {
+            dir = motion_up;
+        }
+        else
+        {
+            dir = motion_right;
+        }
+    }
+    else if ((gesture_ud_count_ == 1) && (gesture_lr_count_ == -1))
+    {
+        if (abs(gesture_ud_delta_) > abs(gesture_lr_delta_))
+        {
+            dir = motion_down;
+        }
+        else
+        {
+            dir = motion_left;
+        }
+    }
+    else if ((gesture_ud_count_ == -1) && (gesture_lr_count_ == -1))
+    {
+        if (abs(gesture_ud_delta_) > abs(gesture_lr_delta_))
+        {
+            dir = motion_up;
+        }
+        else
+        {
+            dir = motion_left;
+        }
+    }
+    else if ((gesture_ud_count_ == 1) && (gesture_lr_count_ == 1))
+    {
+        if (abs(gesture_ud_delta_) > abs(gesture_lr_delta_))
+        {
+            dir =  motion_down;
+        }
+        else
+        {
+            dir = motion_right;
+        }
+    }
+    else
+    {
+        return none;
+    }
+
+    return dir;
 }
 
 

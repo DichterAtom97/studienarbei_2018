@@ -20,6 +20,8 @@
 #define TYPE_1_LENGTH   2
 #define TYPE_2_LENGTH   6
 #define TYPE_4_LENGTH   4
+#define TYPE_8_LENGTH   8
+#define TYPE_16_LENGTH   16
 
 uint8_t ReceiveBuffer[MAX_BUFFER_SIZE];
 

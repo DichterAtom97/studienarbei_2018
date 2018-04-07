@@ -14,7 +14,7 @@
 #define ADPS99_ADDR 0x39 //slave address
 #define ONE_MESSAGE 1
 
-#define THRESHOLD   10
+#define THRESHOLD   0xA0
 #define GESTURE_SENSITIVITY_1 50
 #define GESTURE_SENSITIVITY_2 20
 
@@ -22,10 +22,10 @@
 
 typedef struct
 {
-    uint8_t up[4];
-    uint8_t down[4];
-    uint8_t left[4];
-    uint8_t right[4];
+    uint8_t up[16];
+    uint8_t down[16];
+    uint8_t left[16];
+    uint8_t right[16];
 }gesture_type;
 
 typedef enum
